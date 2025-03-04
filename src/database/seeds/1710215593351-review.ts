@@ -1,0 +1,91 @@
+import { fakerEN_US } from '@faker-js/faker';
+import { Review } from 'src/api/review/entities/review.entity';
+import { DataSource } from 'typeorm';
+import { Seeder, SeederFactoryManager } from 'typeorm-extension';
+
+export class Review1710215593351 implements Seeder {
+  track = false;
+
+  public async run(
+    dataSource: DataSource,
+    factoryManager: SeederFactoryManager,
+  ): Promise<any> {
+    const reviewRepository = dataSource.getRepository(Review);
+
+    await dataSource.query(
+      `ALTER TABLE reviews DROP FOREIGN KEY FK_Review_User`,
+    );
+    await dataSource.query(
+      `ALTER TABLE reviews DROP FOREIGN KEY FK_Review_Car`,
+    );
+
+    const uuidList = [
+      'c1f2a754-65cd-4b5a-bcb4-02b940d9725f',
+      'e5a8c671-ebd8-4f9d-aa13-4d661f97d63b',
+      'a3e1d0f6-c1a2-4a6b-8eab-6a9b2c08a87d',
+      '7b910d8c-1eae-4758-8c6f-561d2fbb0b36',
+      'f2e6d4c5-1c4b-47fe-9a8a-65ce9b5e163d',
+      '3dabf86a-530e-4f98-b049-96b296bb9cf5',
+      '9c3e6d1f-7e5a-4670-88d8-942e662b9c94',
+      'b8a4c9ed-540d-4189-a77c-b9f50604c2a2',
+      '2f4b0d61-8d84-4622-87e0-689fe3450128',
+      '6d371e9d-fc0f-4e2c-845c-890238e7910d',
+      '0f85d127-4b80-4c1e-90e2-15db882d4a34',
+      '4d3c5f6a-8e8f-4567-aa84-3e326891c132',
+      'c6a1e2d4-5f3c-481d-9e4f-ace9b0c3b857',
+      '1a3e5f4c-d8eb-4b39-bc23-6253a9783f92',
+      '7f6e9b8c-4da1-4025-9a80-8a69482a0cc3',
+      'b5c0a4e8-9fda-4f0e-b83a-217e60e529e1',
+      '9e4d1b3d-2a7f-4f16-89c0-5a1344d7bd91',
+      'f0b4c6a5-1d82-40a3-b062-97be8bc1f11f',
+      '8c9d2e5a-3017-4a36-9ac3-6f3c7d4a588b',
+      '352d4f1a-7808-4c71-b918-94883e8c2d4f',
+      '3e1c8b9f-d0a6-4be4-8f4c-95d32fbb59e0',
+      '1b5c8a4e-f2c0-40d1-8457-7a389c50cf29',
+      'f6e9a7d2-b4c8-4d0a-9c3e-5db6d4e2c1f3',
+      'b2d9e7c8-3a5f-49a6-bbd0-854c9f68e247',
+      'c9e8f4b0-7a36-4e2b-9a8d-6e1f4739c8a7',
+      '8f1c0b5a-6e2d-4f8c-b98e-3b49c7a25d1a',
+      '2b5f6c8d-a1e9-4b3c-b56d-0c981d3f57a9',
+      '5a8b7f6e-9c8d-4b2f-ae6d-1c385c9e8d4b',
+      'c4e3a7b1-6d9f-4e80-b24c-7fd5e1869a4b',
+      'd8c9a6e5-0b13-49e3-8db3-5a6c2d1f3e0d',
+      '8d7c1a3b-1e5f-48cb-9d0a-3e4f6d8c7a9b',
+      'e0c9f1a7-4d9b-4efb-8e56-7d2b3e1c4f0a',
+      '9a2c4e1d-6f3b-4a1e-bc8d-875f4e1d2c8a',
+      '4b8e6d3f-c1a5-49d0-ba9f-08fba2e3d0c9',
+      '0c9a3b5f-4e2d-4891-ba3f-6e8d4c9a1f0e',
+      '1f3e4c2b-98d0-476a-bf15-79e3c9a5f6d2',
+      'd6b8f2a1-c3e0-4d9a-9c5b-3f7e6a9d0c8b',
+      '7b1f8c6e-9d4a-42f3-a1c5-8e0b5f3c7d1a',
+      '6a5c8e7d-3f0b-4d2e-9a1c-8e9d1f4c6b2a',
+      '9c4b2d8f-1a5e-4d0f-8c3b-5e2a7d8c1f6e',
+      'f6b5a1c3-9e8d-4c7b-8e0d-2f1c5b9e4d3f',
+      'd3c8b1f6-4e5a-4b1f-9c8d-2e3f6d1a5c8b',
+      'c4e1a7b9-3f6d-4e8c-9d2a-6b1c8d4e9a5c',
+      '7b2d1e3c-8f5a-4c1b-9e4d-2a7c8f6d1e3',
+    ];
+
+    const ratings = [1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+
+    for (let i = 0; i < 200; i++) {
+      const carID = Math.floor(Math.random() * 30) + 1;
+      const avgRating = ratings[Math.floor(Math.random() * ratings.length)];
+      const userID = uuidList[Math.floor(Math.random() * uuidList.length)];
+      const content = fakerEN_US.commerce.productDescription();
+      await reviewRepository.insert({
+        user: { id: userID },
+        car: { id: carID },
+        avg_rating: avgRating,
+        content: content,
+      });
+    }
+
+    await dataSource.query(
+      `ALTER TABLE reviews ADD CONSTRAINT FK_Review_User FOREIGN KEY (user_id) REFERENCES users(id) ;`,
+    );
+    await dataSource.query(
+      `ALTER TABLE reviews ADD CONSTRAINT FK_Review_Car FOREIGN KEY (car_id) REFERENCES cars(id) ;`,
+    );
+  }
+}

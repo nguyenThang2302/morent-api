@@ -1,0 +1,41 @@
+services:
+  car_rent_backend:
+    container_name: car_rent_backend # If you want to make changes, edit all the words car_rent_backend in package.json as well
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: development # production / development
+    image: car_rent_backend
+    command: npm run start:dev # dev | prod
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app # Dev only
+      - /usr/src/app/node_modules
+    ports:
+      - '3301:3000'
+
+  car_rent_db:
+    image: mysql:8.0.36-debian
+    restart: always
+    ports:
+      - '3307:3306'
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD
+      - MYSQL_DATABASE=
+      - MYSQL_USER=
+      - MYSQL_PASSWORD=
+    volumes:
+      - mysql:/var/lib/mysql
+
+  redis:
+    image: redis
+    ports:
+      - 6380:6379
+    volumes:
+      - redis:/data
+volumes:
+  mysql:
+  redis:
